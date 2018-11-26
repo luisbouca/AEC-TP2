@@ -6,15 +6,30 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score, cr
 from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 
-columns = "FinalGrade;PSS_Stress;TotalQuestions;avg_durationperquestion;avg_tbd;decision_time_efficiency;good_decision_time_efficiency;maxduration;median_tbd;minduration;num_decisions_made;question_enter_count;ratio_decisions;ratio_good_decisions;totalduration;variance_tbd".split(";")
-data = pd.read_csv("Dataset_DecisionPSS.csv")
-df = pd.DataFrame(data,columns=columns)
-print(df)
-dfimp = df.fillna(df.mean())
-print(dfimp)
-y=dfimp.iloc[:,1]
+def gay(missingval,normalize):
+    columns = "FinalGrade;PSS_Stress;TotalQuestions;avg_durationperquestion;avg_tbd;decision_time_efficiency;good_decision_time_efficiency;maxduration;median_tbd;minduration;num_decisions_made;question_enter_count;ratio_decisions;ratio_good_decisions;totalduration;variance_tbd".split(";")
+    data = pd.read_csv("Dataset_DecisionPSS.csv")
+    df = pd.DataFrame(data,columns=columns)
+    print(df)
+    if missingvalues:
+        df = df.fillna(df.mean())
+    else
+        df = df;
+    
+    if(normalize):
+        
+    return df
+
+df = gay(true,false)
+y=df.iloc[:,2]
 print(y)
-X_train,X_test,Y_train,Y_test = train_test_split(dfimp,y,test_size=0.2)
+
+
+
+
+X_train,X_test,Y_train,Y_test = train_test_split(df,y,test_size=0.2)
+
+
 svmgo = svm.SVC(gamma='scale')
 
 svmgo.fit(X_train,Y_train)
