@@ -7,7 +7,7 @@ from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 
 def gay(missingval,normalize):
-    columns = "FinalGrade;PSS_Stress;TotalQuestions;avg_durationperquestion;avg_tbd;decision_time_efficiency;good_decision_time_efficiency;maxduration;median_tbd;minduration;num_decisions_made;question_enter_count;ratio_decisions;ratio_good_decisions;totalduration;variance_tbd".split(";")
+    columns = "ExamID;FinalGrade;PSS_Stress;TotalQuestions;avg_durationperquestion;avg_tbd;decision_time_efficiency;good_decision_time_efficiency;maxduration;median_tbd;minduration;num_decisions_made;question_enter_count;ratio_decisions;ratio_good_decisions;totalduration;variance_tbd".split(";")
     data = pd.read_csv("Dataset_DecisionPSS.csv")
     df = pd.DataFrame(data,columns=columns)
     print(df)
@@ -23,6 +23,22 @@ def gay(missingval,normalize):
 df = gay(true,false)
 y=df.iloc[:,2]
 print(y)
+#Parte nova
+teste = np.array(df['FinalGrade']).reshape(1, -1)
+data_binar=Binarizer(threshold=0.5).transform(teste)
+data_binar=np.transpose(data_binar) 
+df2 = pd.DataFrame({"FinalGrade":data_binar[:,0]})
+print(df2)
+print(df['FinalGrade'])
+df['FinalGrade'] = df2['FinalGrade']
+print(df)
+
+X_train,X_test,Y_train,Y_test = train_test_split(df,y,test_size=0.2) 
+model = svm.SVC()
+model.fit(X_train, Y_train)
+score=model.score(X_test, Y_test)
+print(score)
+
 
 
 
@@ -34,6 +50,14 @@ svmgo = svm.SVC(gamma='scale')
 
 svmgo.fit(X_train,Y_train)
 svmgo.score(X_test,Y_test)
+
+
+
+
+
+
+
+
 '''
 #load the diabetes housing dataset
 columns = "age sex bmi map tc ldl hdl tch ltg glu".split()#declare the columns names
